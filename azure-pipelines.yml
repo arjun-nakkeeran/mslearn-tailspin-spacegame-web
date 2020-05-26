@@ -23,7 +23,7 @@ steps:
     packagetype: sdk
     version: 3.1.100
 
-- task: Npm@2
+- task: Npm@1
   displayName: 'Npm run Install'
   inputs:
     verbose: false
