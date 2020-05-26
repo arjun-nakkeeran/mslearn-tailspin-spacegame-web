@@ -18,34 +18,34 @@ variables:
 
 steps:
 - task: UseDotNet@2
-  displayname: 'Use dotnet core sdk 3.1'
+  displayName: 'Use dotnet core sdk 3.1'
   inputs:
-  packagetype: sdk
-  version: 3.1.100
+    packagetype: sdk
+    version: 3.1.100
 
 - task: Npm@2
-  displayname: 'Npm run Install'
+  displayName: 'Npm run Install'
   inputs:
     verbose: false
 
 - script: './node_modules/.bin/node-sass Tailspin.SpaceGame.Web --output Tailspin.SpaceGame.Web/wwwroot'
-  displayname: 'Compile node-sass files'
+  displayName: 'Compile node-sass files'
 
 - task: gulp@1
-  displayname: 'Run gulp tasks'
+  displayName: 'Run gulp tasks'
 
 - script: 'echo "$(Build.DefinitionName), $(Build.BuildId), $(Build.BuildNumber)" > buildInfo.txt'
-  displayname: 'Write build info'
-  workingdirectory: 'Tailspin.SpaceGame.Web/wwwroot'
+  displayName: 'Write build info'
+  workingDirectory: 'Tailspin.SpaceGame.Web/wwwroot'
 
 - task: DotNetCoreCLI@2
-  displayname: 'Restore nuget packages'
+  displayName: 'Restore nuget packages'
   inputs:
     command: 'restore'
     projects: '**/*.csproj'
 
 - task: DotNetCoreCLI@2
-  displayname: 'Build code'
+  displayName: 'Build code'
   inputs:
     command: build
     projects: '**/*.csproj'
