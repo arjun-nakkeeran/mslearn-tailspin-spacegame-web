@@ -7,12 +7,12 @@ steps:
   inputs:
     command: build
     projects: '**/*.csproj'
-    arguments: --no-restore --configuration ${{buildconfig}}
+    arguments: --no-restore --configuration ${{ parameters.buildconfig }}
 
 - task: DotNetCoreCLI@2
   displayName: 'Publish the dotnet project'
   inputs:
     command: 'publish'
     projects: '**/*.csproj'
-    arguments: '--no-build --configuration ${{buildconfig}} --output $(Build.ArtifactStagingDirectory)/Release'
+    arguments: '--no-build --configuration ${{ parameters.buildconfig }} --output $(Build.ArtifactStagingDirectory)/Release'
     ZipAfterPublish: true
