@@ -56,7 +56,7 @@ steps:
   inputs:
     command: 'publish'
     projects: '**/*.csproj'
-    arguments: '--no-build --configuration release --output $(Build.ArtifactStagingDiretory)/Release'
+    arguments: '--no-build --configuration release --output $(Build.ArtifactStagingDirectory)/Release'
     ZipAfterPublish: true
 
 - task: PublishBuildArtifacts@1
