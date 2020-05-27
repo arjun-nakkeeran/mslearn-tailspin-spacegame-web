@@ -15,20 +15,22 @@ variables:
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
+  wwwrootDir: 'Tailspin.SpaceGame.Web/wwwroot'
+  dotnetsdkver: '3.1.100'
 
 steps:
 - task: UseDotNet@2
   displayName: 'Use dotnet core sdk 3.1'
   inputs:
     packagetype: sdk
-    version: 3.1.100
+    version: $(dotnetsdkver)
 
 - task: Npm@1
   displayName: 'Npm run Install'
   inputs:
     verbose: false
 
-- script: './node_modules/.bin/node-sass Tailspin.SpaceGame.Web --output Tailspin.SpaceGame.Web/wwwroot'
+- script: './node_modules/.bin/node-sass $(wwwrootDir) --output $(wwwrootDir)'
   displayName: 'Compile node-sass files'
 
 - task: gulp@1
@@ -36,7 +38,7 @@ steps:
 
 - script: 'echo "$(Build.DefinitionName), $(Build.BuildId), $(Build.BuildNumber)" > buildInfo.txt'
   displayName: 'Write build info'
-  workingDirectory: 'Tailspin.SpaceGame.Web/wwwroot'
+  workingDirectory: '$(wwwrootDir)'
 
 - task: DotNetCoreCLI@2
   displayName: 'Restore nuget packages'
@@ -44,20 +46,13 @@ steps:
     command: 'restore'
     projects: '**/*.csproj'
 
-- task: DotNetCoreCLI@2
-  displayName: 'Build code'
-  inputs:
-    command: build
-    projects: '**/*.csproj'
-    arguments: --no-restore --configuration release
+- template: pipeline-template/build.yml
+  parameters:
+    buildconfig: 'Debug'
 
-- task: DotNetCoreCLI@2
-  displayName: 'Publish the dotnet project'
-  inputs:
-    command: 'publish'
-    projects: '**/*.csproj'
-    arguments: '--no-build --configuration release --output $(Build.ArtifactStagingDirectory)/Release'
-    ZipAfterPublish: true
+- template: pipeline-template/build.yml
+  parameters:
+    buildconfig: 'Release'
 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Build Artifact'

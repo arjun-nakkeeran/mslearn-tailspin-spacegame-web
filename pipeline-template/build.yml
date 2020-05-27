@@ -1,0 +1,18 @@
+parameters:
+  buildconfig: 'Release'
+
+steps:
+- task: DotNetCoreCLI@2
+  displayName: 'Build code'
+  inputs:
+    command: build
+    projects: '**/*.csproj'
+    arguments: --no-restore --configuration ${{buildconfig}}
+
+- task: DotNetCoreCLI@2
+  displayName: 'Publish the dotnet project'
+  inputs:
+    command: 'publish'
+    projects: '**/*.csproj'
+    arguments: '--no-build --configuration ${{buildconfig}} --output $(Build.ArtifactStagingDirectory)/Release'
+    ZipAfterPublish: true
