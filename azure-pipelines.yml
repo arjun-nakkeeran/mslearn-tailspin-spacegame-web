@@ -63,7 +63,7 @@ steps:
 - script: 'reportgenerator -reports:$(Build.SourceDirectory)/**/coverage.cobertura.xml -targetdir:$(Build.SourcesDirectory)/CodeCoverage -reporttypes:HtmlInline_AzurePipelines'
   displayName: 'Create Code coverage report'
 
-- task: PublishCodeCoverageResult@1
+- task: PublishCodeCoverageResults@1
   displayName: 'Publish Code Coverage Report'
   inputs:
     codeCoverageTool: 'cobertura'
